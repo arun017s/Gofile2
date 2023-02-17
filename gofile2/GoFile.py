@@ -13,7 +13,7 @@ from .errors import (InvalidOption, InvalidPath, InvalidToken, JobFailed,
 
 def is_valid_token(url, token):  
     req = get(f"{url}getAccountDetails?token={token}")
-    resp = await req.json()
+    resp = req.json()
     if resp["status"] == "error-wrongToken":
        raise InvalidToken(
             "Invalid Gofile Token, Get your Gofile token from --> https://gofile.io/myProfile")
