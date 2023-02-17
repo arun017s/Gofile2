@@ -1,14 +1,24 @@
 # Original Author: Codec04
 # Re-built by Itz-fork
 # Project: Gofile2
-import os
 
+import os
+from requests import get 
 from asyncio import sleep
 from time import strftime
 from aiohttp import ClientSession
 from .errors import (InvalidOption, InvalidPath, InvalidToken, JobFailed,
-                     ResponseError, is_valid_token)
+                     ResponseError)
 
+
+def is_valid_token(url, token):  
+    req = get(f"{url}getAccountDetails?token={token}")
+    resp = await req.json()
+    if resp["status"] == "error-wrongToken":
+       raise InvalidToken(
+            "Invalid Gofile Token, Get your Gofile token from --> https://gofile.io/myProfile")
+    else:
+       pass
 
 class GoFile:
     """
@@ -23,6 +33,7 @@ class GoFile:
         self.token = token
         if self.token is not None:
             is_valid_token(url=self.api_url, token=self.token)
+       
 
     async def _api_resp_handler(self, response):
         api_status = response["status"]
