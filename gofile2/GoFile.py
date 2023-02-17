@@ -5,7 +5,7 @@
 import os
 from requests import get 
 from asyncio import sleep
-from time import strftime
+from time import strftime, time
 from aiohttp import ClientSession
 from .errors import (InvalidOption, InvalidPath, InvalidToken, JobFailed,
                      ResponseError)
@@ -116,6 +116,7 @@ class GoFile:
             - `file` - Path to file that want to be uploaded
             - `folderId` (optional) - The ID of a folder. When using the folderId, you must pass the token            
         """
+        start_time = int(time())
         async with ClientSession() as session:
             # Check time
             if not os.path.isfile(file):
@@ -139,6 +140,9 @@ class GoFile:
                         data=req_dict
                     )
                     upload_file = await upload_file.json()
+                    end_time    = int(time())
+                    time_taken  = end_time-start_time
+                    upload_file["data"]["time_taken"]=time_taken
                     return await self._api_resp_handler(upload_file)
                 except Exception as e:
                     raise JobFailed(e)
