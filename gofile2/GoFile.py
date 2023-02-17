@@ -135,11 +135,11 @@ class GoFile:
             with open(file, "rb") as go_file_d:
                 req_dict["file"] = go_file_d
                 try:
-                    upload_file = await session.post(
+                    upload = await session.post(
                         url=f"https://{server}.gofile.io/uploadFile",
                         data=req_dict
                     )
-                    upload_file = await upload_file.json()
+                    upload_file = (await upload.json()).copy()
                     end_time    = int(time())
                     time_taken  = end_time-start_time
                     upload_file["data"]["time_taken"]=time_taken
