@@ -168,12 +168,12 @@ class GoFile:
             except Exception as e:
                 raise JobFailed(e)
 
-    async def setFolderOption(self, folderId, option, value):
+    async def setOption(self, contentId, option, value):
         """
         ### Set Folder Option Function:
-            - Set an option on a folder
+            - Set an option 
         ### Arguments:
-            - `folderId` - The ID of the folder
+            - `contentId` - The ID of the content 
             - `option` - Option that you want to set. Can be "public", "password", "description", "expire" or "tags"
             - `value` - The value of the option to be defined.
                      - For "public", can be "true" or "false".
@@ -189,10 +189,10 @@ class GoFile:
         async with ClientSession() as session:
             try:
                 set_folder_resp = await session.put(
-                    url=f"{self.api_url}setFolderOption",
+                    url=f"{self.api_url}setOption",
                     data={
                         "token": self.token,
-                        "folderId": folderId,
+                        "contentId": contentId,
                         "option": option,
                         "value": value
                     }
